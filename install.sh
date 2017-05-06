@@ -18,22 +18,94 @@
 
 
 
-# YOU CAN MODIFY THERE VALUES
 
-wUser="user"
-wPass="`date +%s|sha256sum|base64|head -c 8`"
-wEmail="changemeifyouwant@blablabla.com"
+
+
 
 # It's very important to change that if needed: You must put your accessible web root-directory - Example: on Debian/Centos7 it's /var/www/html
-wRoot="/var/www/html"
+
+
+
+# ./ **** DEFAULT VALUES YOU CAN MODIFY THESE DEFAULT VALUES
+
+
+
+
+wPass="`date +%s|sha256sum|base64|head -c 8`"
+
+# IF NO ARGUMENTS SUPPPLIEDS VIA THE COMMAND LINE WE ASK USER FOR SOME CONFIG VALUES
+if [ $# -eq 0 ]
+  then
+    echo
+    echo "ENTERING CUSTOM CONFIGURATION"
+    echo    # (optional) move to a new line
+
+    # ASKING WEB ROOT DIRECTORY
+    echo "Enter your web root directory (example: /var/www/html)"
+    read wRoot
+    echo
+    # ASKING FOLDER NAME
+    echo "ENTER YOUR DESIRED NAME FOLDER FOR THE INSTALL"
+    read foldername
+    echo
+    echo "---------- DATABASE CONFIG -----------"
+    # ASKING DATABASE NAME
+    echo "DATABASE NAME"
+    read bddname
+    echo
+    # ASKING DATABASE USER
+    echo "DATABASE USER"
+    read bdduser
+    echo
+    # ASKING DATABASE PASSWORD
+    echo "DATABASE PASSWORD"
+    read bddpass
+    echo
+    echo "---------- WORDPRESS CONFIG -----------"
+    # ASKING Wordpress USER
+    echo "Enter the desired user for the wordpress login"
+    read wUser
+    echo
+    # ASKING Wordpress EMAIL
+    echo "Enter the desired email for the wordpress install"
+    read wEmail
+    echo
+    echo
+    echo "     Password will be generated at the end of this script ;)"
+    echo
+    sleep 2
+    echo "     BEGIN INSTALL IN:"
+    sleep 2
+    echo "     3"
+    sleep 1
+    echo "      2"
+    sleep 1
+    echo "        1"
+    sleep 1
+
+
+else
+
+    wUser="user"
+    wEmail="defaultmailuser@blablabla123.com"
+    wRoot="/var/www/html"
+
+    foldername=$1
+    bddname=$2
+    bdduser=$3
+    bddpass=$4
+
+fi
+# END IF 
+
+
+
+
 
 
 # DON'T TOUCH ;)
 
-foldername=$1
-bddname=$2
-bdduser=$3
-bddpass=$4
+
 
 # We get the local IP of the machine running this script
 localip=`ifconfig|xargs|awk '{print $7}'|sed -e 's/[a-z]*:/''/'`
