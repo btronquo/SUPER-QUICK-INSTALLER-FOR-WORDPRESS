@@ -5,7 +5,7 @@ Enjoy deploying wordpress on your server :)
 
 ### Easy-Start -> 2 way
 
-1. If you want to be asked wich folder wich paramuse this:
+1. If you want to be asked wich folder you want to use etc etc.. try this:
  ```sh
 $ git clone https://github.com/btronquo/SUPER-QUICK-INSTALLER-FOR-WORDPRESS.git SQIFW
 $ cd SQIFW
