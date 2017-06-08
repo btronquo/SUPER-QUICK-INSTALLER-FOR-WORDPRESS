@@ -30,7 +30,7 @@
 
 
 
-
+# Password is created here
 wPass="`date +%s|sha256sum|base64|head -c 8`"
 
 # IF NO ARGUMENTS SUPPPLIEDS VIA THE COMMAND LINE WE ASK USER FOR SOME CONFIG VALUES
@@ -38,8 +38,7 @@ if [ $# -eq 0 ]
   then
     echo
     echo "ENTERING CUSTOM CONFIGURATION"
-    echo    # (optional) move to a new line
-
+    echo
     # ASKING WEB ROOT DIRECTORY
     echo "Enter your web root directory (example: /var/www/html)"
     read wRoot
@@ -83,36 +82,23 @@ if [ $# -eq 0 ]
     echo "        1"
     sleep 1
 
-
 else
-
     wUser="user"
-    wEmail="defaultmailuser@blablabla123.com"
+    wEmail="changeme@changeme.com"
     wRoot="/var/www/html"
 
     foldername=$1
     bddname=$2
     bdduser=$3
     bddpass=$4
-
 fi
-# END IF 
-
-
-
-
-
 
 # DON'T TOUCH ;)
-
-
 
 # We get the local IP of the machine running this script
 localip=`ifconfig|xargs|awk '{print $7}'|sed -e 's/[a-z]*:/''/'`
 
-
-
-# ----------- STEP 2 ++ CREATING DIRECTORIES ++  WE GET THE ARGUMENT FROM THE COMMAND LINE (SEE README.MD -> USAGE)
+# ----------- STEP 2 ++ CREATING DIRECTORIES ++  GET THE ARGUMENT FROM THE COMMAND LINE (SEE README.MD -> USAGE)
 
 wget https://wordpress.org/latest.zip -P /var/tmp 
 unzip /var/tmp/latest.zip -d /var/tmp 
@@ -143,18 +129,27 @@ configurer() {
 }
 configurer
 
+# ADD THE SALT VALUES TO CONFIG.PHP
+perl -i -pe'
+  BEGIN {
+    @chars = ("a" .. "z", "A" .. "Z", 0 .. 9);
+    push @chars, split //, "!@#$%^&*()-_ []{}<>~\`+=,.;:/?|";
+    sub salt { join "", map $chars[ rand @chars ], 1 .. 64 }
+  }
+  s/put your unique phrase here/salt()/ge
+' $wRoot/$foldername/wp-config.php
 
-#SUPPRIMER LES PLUGINS POUR FAIRE UNE CLEAN INSTALL
+# REMOVE OPTIONALS PLUGINS
 rm -rf $wRoot/$foldername/wp-content/plugins/hello.php
 rm -rf $wRoot/$foldername/wp-content/plugins/akismet
 
 
 
-#Configuration
+# FINISH INSTALL
 curl --silent --data "user_name=$wUser&admin_password=$wPass&admin_password2=$wPass&admin_email=$wEmail&blog_public=unchecked&Submit=submit" "http://$localip/$foldername/wp-admin/install.php?step=2" > /dev/null
 
 
-#ON NETTOIE LECRAN
+#CLEAN THE SCREEN Yo
 clear
 
 # ON MONTRE LES PARAMETRES
