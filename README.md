@@ -1,5 +1,4 @@
 # WORDPRESS SUPER QUICK INSTALLER
-![N|Solid](https://s18.postimg.org/ryy1cs1qh/iconmonstr-whats-hot-1-32.png) Release 1.1
 
 Enjoy deploying wordpress on your server :) 
 
@@ -26,6 +25,4 @@ This will auto-install and set up the wordpress environment.
 Boris Tronquoy
 
 ##License
-----
-
 MIT
